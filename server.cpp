@@ -7,7 +7,10 @@
 
 #include "Secret.h"
 
+#include <QDBusMetaType>
+
 int main(int ac, char **av) {
+	qDBusRegisterMetaType<StringMap>(); // FINALLY
 
 	QCoreApplication a(ac, av);
 

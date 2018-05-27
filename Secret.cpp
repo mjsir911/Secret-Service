@@ -62,6 +62,12 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 QDBusObjectPath SecretService::ReadAlias(const QString &name) {}
 QList<QDBusObjectPath> SecretService::SearchItems(StringMap &attributes, QList<QDBusObjectPath> &locked) {
 	std::cerr << "YOOOOOO\n";
+	qDebug() << attributes << "\n";
+
+	QList<QDBusObjectPath> list = {QDBusObjectPath("/")};
+
+	//locked = list;
+	return list;
 }
 void SecretService::SetAlias(const QString &name, const QDBusObjectPath &collection) {}
 QList<QDBusObjectPath> SecretService::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {}
