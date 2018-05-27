@@ -14,7 +14,12 @@
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
 
-class SecretService : public QObject {
+
+typedef QMap<QString,QString> StringMap;
+Q_DECLARE_METATYPE(StringMap)
+// qDBusRegisterMetaType<StringMap>();
+
+class SecretService : public QObject, public QDBusContext {
 public:
 SecretService(QObject *parent);
 public slots:
@@ -25,7 +30,7 @@ public slots:
 	void LockService(void);
 	QDBusVariant OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result);
 	QDBusObjectPath ReadAlias(const QString &name);
-	QList<QDBusObjectPath> SearchItems(const QString &attributes, QList<QDBusObjectPath> &locked);
+	QList<QDBusObjectPath> SearchItems(StringMap &attributes, QList<QDBusObjectPath> &locked);
 	void SetAlias(const QString &name, const QDBusObjectPath &collection);
 	QList<QDBusObjectPath> Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt);
 };
