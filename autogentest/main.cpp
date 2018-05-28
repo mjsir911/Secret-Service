@@ -11,7 +11,9 @@
 #include <sodium.h>
 
 int main(int ac, char **av) {
-	sodium_init();
+	if (sodium_init() < 0) {
+		throw;
+	}
 	registerMetaTypes();
 
 
