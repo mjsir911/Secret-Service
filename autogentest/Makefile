@@ -19,11 +19,8 @@ $(TARGET): Service.dbus.o main.cpp Types.cpp
 %Adaptor.cpp %Adaptor.h: %.h $(SERVICE)s.xml
 	qdbusxml2cpp $(word 2,$^) -i $< -l _$* -a $*Adaptor $(SERVICE).$*
 
-%.moc: %.h %.cpp # For some reason the order here determines an interemediate file being removed. Ah well, better cpp get removed than .h
-	moc -f $< -f $(word 2,$^) $(DEFINES) $(INCPATH) $< -o $@
-
-%.cpp: %.h
-	touch $@
+%.moc: %.cpp %.h # For some reason the order here determines an interemediate file being removed. Ah well, better cpp get removed than .h
+	moc -f $(word 1,$^) $(DEFINES) $(INCPATH) $(word 2,$^) -o $@
 
 %.o: %.moc
 	$(COMPILE.cpp) -xc++ $(OUTPUT_OPTION) $<
