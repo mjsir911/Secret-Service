@@ -6,6 +6,9 @@
 class _Service : public QObject, public QDBusContext{
 	Q_OBJECT
 
+private:
+	QDBusConnection &bus;
+
 public:
 		_Service(QObject *, QDBusConnection &);
 

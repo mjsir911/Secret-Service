@@ -1,3 +1,5 @@
+#ifndef UTILS_H
+#define UTILS_H
 #include <stdexcept>
 #include <iostream>
 	
@@ -20,3 +22,4 @@ public:
 
 
 #define debugline() std::cerr << "DEBUG ###: " << __PRETTY_FUNCTION__ << " : " << __LINE__ << " : " << __FILE__ << "\n"
+#endif

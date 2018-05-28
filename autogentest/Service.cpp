@@ -2,7 +2,9 @@
 #include "ServiceAdaptor.h"
 #include "ServiceInterface.h"
 
-_Service::_Service(QObject *parent, QDBusConnection &bus) : QObject(parent) {
+#include "Prompt.h"
+
+_Service::_Service(QObject *parent, QDBusConnection &bus) : QObject(parent), bus(bus) {
 	new ServiceAdaptor(this);
 	new OrgFreedesktopSecretServiceInterface("org.freedesktop.Secret.Service", "org/freedesktop/secrets", bus, this);
 
@@ -54,17 +56,25 @@ QDBusObjectPath _Service::ReadAlias(const QString &name) {
 }
 QList<QDBusObjectPath> _Service::SearchItems(StringMap attributes, QList<QDBusObjectPath> &locked) {
 	debugline();
-	// QList<QDBusObjectPath> list = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx/iiii")};
-	QList<QDBusObjectPath> list = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx")};
-	locked = list;
-	return QList<QDBusObjectPath>();
+#define locked true
+	if (locked) { // If keepassxc database is locked
+		locked = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx")};
+		return QList<QDBusObjectPath>();
+	} else {
+		throw NotImplementedException();
+		locked = QList<QBusObjectPath>();
+		// TODO: search database
+		return QList<QDBusObjectPath>();
+	}
 }
+
 void _Service::SetAlias(const QString &name, const QDBusObjectPath &collection) {
 	debugline();
 	throw NotImplementedException();
 }
+
 QList<QDBusObjectPath> _Service::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {
 	debugline();
-	prompt = QDBusObjectPath("/org/freedesktop/secrets/prompts/name");
-	return QList<QDBusObjectPath>();
+	prompt = (new _Prompt(this, bus, objects))->path; // hmmm
+	return QList<QDBusObjectPath>(); // If we ever get this far, there are probably no unlocked objects
 }

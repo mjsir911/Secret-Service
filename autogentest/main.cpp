@@ -26,7 +26,7 @@ int main(int ac, char **av) {
 
 	_Service secret(&a, dbus);
 
-	_Prompt hi(&a, dbus);
+	//_Prompt hi(&a, dbus);
 
 	a.exec();
 

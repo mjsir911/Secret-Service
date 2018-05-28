@@ -6,8 +6,14 @@
 class _Prompt : public QObject, public QDBusContext{
 	Q_OBJECT
 
+private:
+	QDBusObjectPath generatePath(void);
+	QList<QDBusObjectPath> objectPaths;
+
 public:
-		_Prompt(QObject *, QDBusConnection &);
+	const QDBusObjectPath path;
+	const QString interface = "org.freedesktop.Secret.Prompt";
+	_Prompt(QObject *, QDBusConnection &, QList<QDBusObjectPath>);
 
 public Q_SLOTS: // METHODS
     void Dismiss();
