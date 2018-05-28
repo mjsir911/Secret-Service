@@ -7,6 +7,12 @@ INTERFACES = Service Collection Item Session Prompt
  
 .PRECIOUS: %.o
 
+
+TARGET = server
+
+$(TARGET): Service.dbus.o main.cpp Types.cpp
+	g++ $^ -o $@ $(CXXFLAGS) $(LDFLAGS)
+
 %Interface.cpp %Interface.h: %.h $(SERVICE)s.xml
 	qdbusxml2cpp $(word 2,$^) -i $< -l _$* -p $*Interface $(SERVICE).$*
 
@@ -21,6 +27,9 @@ INTERFACES = Service Collection Item Session Prompt
 
 %.o: %.moc
 	$(COMPILE.cpp) -xc++ $(OUTPUT_OPTION) $<
+
+# %.o: %.cpp
+	# $(COMPILE.cpp) $(OUTPUT_OPTION) $<
 
 %.dbus.o: %.o %Adaptor.o %Interface.o
 	$(LD) $(OUTPUT_OPTION) -r $^ 
