@@ -8,10 +8,22 @@
 
 #define debugline() std::cerr << "DEBUG ###: " << __PRETTY_FUNCTION__ << " : " << __LINE__ << " : " << __FILE__ << "\n"
 
-SecretService::SecretService(QObject *parent): QObject(parent) {}
+class NotImplemented : public std::logic_error
+{
+public:
+    NotImplemented() : std::logic_error("Function not yet implemented") { };
+};
 
-QDBusObjectPath SecretService::ChangeLock(const QDBusObjectPath &collection) {}
-QDBusObjectPath SecretService::CreateCollection(const QString &properties, const QString &alias, QDBusObjectPath &prompt) {}
+SecretService::SecretService(QObject *parent): QObject(parent) {
+	throw NotImplemented();
+}
+
+QDBusObjectPath SecretService::ChangeLock(const QDBusObjectPath &collection) {
+	throw NotImplemented();
+}
+QDBusObjectPath SecretService::CreateCollection(const QString &properties, const QString &alias, QDBusObjectPath &prompt) {
+	throw NotImplemented();
+}
 
 SecretsDict SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {
 	debugline();
@@ -22,8 +34,12 @@ SecretsDict SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const
 	ret[items[0]] = secret;
 	return ret;
 }
-QList<QDBusObjectPath> SecretService::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {}
-void SecretService::LockService(void) {}
+QList<QDBusObjectPath> SecretService::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {
+	throw NotImplemented();
+}
+void SecretService::LockService(void) {
+	throw NotImplemented();
+}
 
 QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result) {
 	debugline();
@@ -100,15 +116,23 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 }
 
 
-QDBusObjectPath SecretService::ReadAlias(const QString &name) {}
+QDBusObjectPath SecretService::ReadAlias(const QString &name) {
+	throw NotImplemented();
+}
+
 QList<QDBusObjectPath> SecretService::SearchItems(StringMap &attributes, QList<QDBusObjectPath> &locked) {
 	debugline();
 	qDebug() << attributes << "\n";
 
 	QList<QDBusObjectPath> list = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx/iiii")};
 
-	//locked = list;
-	return list;
+	locked = list;
+	return QList<QDBusObjectPath>();
 }
-void SecretService::SetAlias(const QString &name, const QDBusObjectPath &collection) {}
-QList<QDBusObjectPath> SecretService::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {}
+
+void SecretService::SetAlias(const QString &name, const QDBusObjectPath &collection) {
+	throw NotImplemented();
+}
+QList<QDBusObjectPath> SecretService::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {
+	throw NotImplemented();
+}
