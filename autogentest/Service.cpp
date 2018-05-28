@@ -14,24 +14,24 @@ _Service::_Service(QObject *parent, QDBusConnection &bus) : QObject(parent) {
 
 #include "Utils.h"
 
-QDBusObjectPath _Service::ChangeLock(const QDBusObjectPath &collection) {
-	debugline()
+QDbusObjectPath _Service::ChangeLock(const QDBusObjectPath &collection) {
+	debugline();
 	throw NotImplementedException();
 }
 QDBusObjectPath _Service::CreateCollection(CollectionSpecifier properties, const QString &alias, QDBusObjectPath &prompt) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 SecretsDict _Service::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 QList<QDBusObjectPath> _Service::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 void _Service::LockService() {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result) {
@@ -39,18 +39,18 @@ QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant 
 	throw NotImplementedException();
 }
 QDBusObjectPath _Service::ReadAlias(const QString &name) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 QList<QDBusObjectPath> _Service::SearchItems(StringMap attributes, QList<QDBusObjectPath> &locked) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 void _Service::SetAlias(const QString &name, const QDBusObjectPath &collection) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }
 QList<QDBusObjectPath> _Service::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {
-	debugline()
+	debugline();
 	throw NotImplementedException();
 }

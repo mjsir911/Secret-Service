@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <iostream>
 	
 class NotImplementedException : public std::logic_error
 {
