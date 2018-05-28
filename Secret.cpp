@@ -119,5 +119,7 @@ void SecretService::SetAlias(const QString &name, const QDBusObjectPath &collect
 	throw NotImplementedException();
 }
 QList<QDBusObjectPath> SecretService::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {
-	throw NotImplementedException();
+	debugline();
+	prompt = QDBusObjectPath("/org/freedesktop/secrets/prompts/name");
+	return QList<QDBusObjectPath>();
 }

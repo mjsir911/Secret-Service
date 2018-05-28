@@ -10,7 +10,7 @@ INTERFACES = Service Collection Item Session Prompt
 
 TARGET = server
 
-$(TARGET): Service.dbus.o main.cpp Types.cpp
+$(TARGET): Service.dbus.o main.cpp Types.cpp Prompt.dbus.o
 	g++ $^ -o $@ $(CXXFLAGS) $(LDFLAGS)
 
 %Interface.cpp %Interface.h: %.h $(SERVICE)s.xml
