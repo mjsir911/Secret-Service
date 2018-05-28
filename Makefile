@@ -1,7 +1,7 @@
 # .SUFFIXES:
 
-CXXFLAGS := $(shell pkg-config Qt5DBus --cflags) -fPIC
-LDFLAGS  := $(shell pkg-config Qt5DBus --libs) -l cryptopp
+CXXFLAGS := $(shell pkg-config Qt5DBus libsodium --cflags) -fPIC
+LDFLAGS  := $(shell pkg-config Qt5DBus libsodium --libs)
 
 TARGET = server
 

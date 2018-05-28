@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include "Secret.h"
 
-#include <crypto++/cryptlib.h>
-#include <crypto++/osrng.h>
-#include <crypto++/dh.h>
-#include <crypto++/nbtheory.h>
+#include <sodium.h>
+
+#include <cstring>
+
+#define debugline() std::cerr << "DEBUG ###: " << __PRETTY_FUNCTION__ << " : " << __LINE__ << " : " << __FILE__ << "\n"
 
 SecretService::SecretService(QObject *parent): QObject(parent) {}
 
@@ -20,12 +21,41 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 	if (algorithm == "plain") {
 		// do something
 	} else if (algorithm == "dh-ietf1024-sha256-aes128-cbc-pkcs7") {
-		std::cerr << "hello from the inside\n";
+
+		QByteArray data = input.variant().value<QByteArray>();
+
+		unsigned char other_publickey[data.length()];
+		std::memcpy(other_publickey, data.data(), sizeof other_publickey);
+
+
+		unsigned char my_publickey[crypto_box_PUBLICKEYBYTES];
+		unsigned char my_secretkey[crypto_box_SECRETKEYBYTES];
+		randombytes_buf(my_secretkey, sizeof my_secretkey);
+		crypto_scalarmult_base(my_publickey, my_secretkey);
+
+		unsigned char scalarmult_q_by_server[crypto_scalarmult_BYTES];
+		if (crypto_scalarmult(scalarmult_q_by_server, my_secretkey, other_publickey)) {
+			// ERROR
+		}
+		crypto_generichash_state h;
+		unsigned char sharedkey[crypto_generichash_BYTES];
+
+		crypto_generichash_init(&h, NULL, 0U, sizeof sharedkey);
+		crypto_generichash_update(&h, scalarmult_q_by_server, sizeof scalarmult_q_by_server);
+		crypto_generichash_update(&h, other_publickey, sizeof other_publickey);
+		crypto_generichash_update(&h, my_publickey, sizeof my_publickey);
+		crypto_generichash_final(&h, sharedkey, sizeof sharedkey);
+
+		std::cerr << sharedkey << "\n";
+
+		return QDBusVariant(QByteArray((const char *)my_publickey, crypto_box_PUBLICKEYBYTES));
 	} else {
 		// org.freedesktop.DBus.Error.NotSupported
 	}
 	result.setPath("/");
 
+
+	/*
 	CryptoPP::AutoSeededRandomPool prng;
 	CryptoPP::Integer p, q, g;
 	CryptoPP::PrimeAndGenerator pg;
@@ -49,6 +79,7 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 	unsigned char z[k2.MinEncodedSize()] ;
 	k2.Encode(z, k2.MinEncodedSize());
 	return QDBusVariant(QByteArray::fromRawData((const char *)z, k2.MinEncodedSize()));
+	*/
 
 	//const QDBusMessage z = QDBusMessage::createError("hello", "no");
 
