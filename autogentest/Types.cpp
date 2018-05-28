@@ -6,7 +6,7 @@ void registerMetaTypes() {
 	qDBusRegisterMetaType<StringMap>();
 	qDBusRegisterMetaType<SecretStruct>();
 	qDBusRegisterMetaType<SecretsDict>();
-	qDBusRegisterMetaType<CollectionsSpecifier>();
+	qDBusRegisterMetaType<CollectionSpecifier>();
 }
 
 QDBusArgument &operator<<(QDBusArgument &argument, const SecretStruct &mystruct) {
