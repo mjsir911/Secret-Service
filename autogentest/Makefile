@@ -7,14 +7,17 @@ INTERFACES = Service Collection Item Session Prompt
  
 .PRECIOUS: %.o
 
-%Interface.cpp %Interface.h: $(SERVICE)s.xml %.h
-	qdbusxml2cpp $< -i $*.h -l $* -p $*Interface $(SERVICE).$*
+%Interface.cpp %Interface.h: %.h $(SERVICE)s.xml
+	qdbusxml2cpp $(word 2,$^) -i $< -l _$* -p $*Interface $(SERVICE).$*
 
 %Adaptor.cpp %Adaptor.h: %.h $(SERVICE)s.xml
-	qdbusxml2cpp -i $^ -l _$* -a $*Adaptor $(SERVICE).$*
+	qdbusxml2cpp $(word 2,$^) -i $< -l _$* -a $*Adaptor $(SERVICE).$*
 
 %.moc: %.h %.cpp # For some reason the order here determines an interemediate file being removed. Ah well, better cpp get removed than .h
 	moc -f $< -f $(word 2,$^) $(DEFINES) $(INCPATH) $< -o $@
+
+%.cpp: %.h
+	touch $@
 
 %.o: %.moc
 	$(COMPILE.cpp) -xc++ $(OUTPUT_OPTION) $<
