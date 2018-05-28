@@ -3,14 +3,16 @@
 #include <QtDBus/QtDBus>
 #include "Types.h"
 
-class _Service : public QObject, public QDBusContext{
+class _Service : public QObject, public QDBusContext {
 	Q_OBJECT
 
 private:
 	QDBusConnection &bus;
 
 public:
-		_Service(QObject *, QDBusConnection &);
+	const QDBusObjectPath path = QDBusObjectPath("/org/freedesktop/secrets");
+	const QString interface = "org.freedesktop.Secret.Service";
+	_Service(QObject *, QDBusConnection &);
 
 public Q_SLOTS: // METHODS
     QDBusObjectPath ChangeLock(const QDBusObjectPath &collection);

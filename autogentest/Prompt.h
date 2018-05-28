@@ -9,11 +9,13 @@ class _Prompt : public QObject, public QDBusContext{
 private:
 	QDBusObjectPath generatePath(void);
 	QList<QDBusObjectPath> objectPaths;
+	QDBusConnection &bus;
 
 public:
 	const QDBusObjectPath path;
 	const QString interface = "org.freedesktop.Secret.Prompt";
 	_Prompt(QObject *, QDBusConnection &, QList<QDBusObjectPath>);
+	~_Prompt();
 
 public Q_SLOTS: // METHODS
     void Dismiss();

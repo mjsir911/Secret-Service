@@ -7,6 +7,7 @@
 #include "Service.h"
 
 #include "Prompt.h"
+#include "Collection.h"
 
 #include <QDBusMetaType>
 
@@ -25,6 +26,9 @@ int main(int ac, char **av) {
 	dbus.registerService("org.freedesktop.secrets");
 
 	_Service secret(&a, dbus);
+
+	_Collection only(&a, dbus);
+	only.setDefault();
 
 	//_Prompt hi(&a, dbus);
 

@@ -6,10 +6,10 @@
 
 _Service::_Service(QObject *parent, QDBusConnection &bus) : QObject(parent), bus(bus) {
 	new ServiceAdaptor(this);
-	new OrgFreedesktopSecretServiceInterface("org.freedesktop.Secret.Service", "org/freedesktop/secrets", bus, this);
+	new OrgFreedesktopSecretServiceInterface(interface, path.path(), bus, this);
 
-	bus.registerService("org.freedesktop.Secret.Service");
-	bus.registerObject("/org/freedesktop/secrets", this);
+	bus.registerService(interface);
+	bus.registerObject(path.path(), this);
 
 }
 
@@ -19,10 +19,12 @@ QDBusObjectPath _Service::ChangeLock(const QDBusObjectPath &collection) {
 	debugline();
 	throw NotImplementedException();
 }
+
 QDBusObjectPath _Service::CreateCollection(CollectionSpecifier properties, const QString &alias, QDBusObjectPath &prompt) {
 	debugline();
 	throw NotImplementedException();
 }
+
 SecretsDict _Service::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {
 	debugline();
 	SecretsDict ret;
@@ -31,14 +33,17 @@ SecretsDict _Service::GetSecrets(const QList<QDBusObjectPath> &items, const QDBu
 	return ret;
 	throw NotImplementedException();
 }
+
 QList<QDBusObjectPath> _Service::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {
 	debugline();
 	throw NotImplementedException();
 }
+
 void _Service::LockService() {
 	debugline();
 	throw NotImplementedException();
 }
+
 QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result) {
 	debugline();
 	result.setPath("/");
@@ -50,19 +55,22 @@ QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant 
 		sendErrorReply(QDBusError::NotSupported, "um, no"); 
 	}
 }
+
 QDBusObjectPath _Service::ReadAlias(const QString &name) {
 	debugline();
 	throw NotImplementedException();
 }
+
 QList<QDBusObjectPath> _Service::SearchItems(StringMap attributes, QList<QDBusObjectPath> &locked) {
 	debugline();
-#define locked true
-	if (locked) { // If keepassxc database is locked
-		locked = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx")};
+#define database_locked false
+	if (database_locked) { // If keepassxc database is locked
+		throw NotImplementedException();
+		//locked = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx")};
+		locked = {QDBusObjectPath("/org/freedesktop/secrets/aliases/default")};
 		return QList<QDBusObjectPath>();
 	} else {
-		throw NotImplementedException();
-		locked = QList<QBusObjectPath>();
+		locked = {QDBusObjectPath("/org/freedesktop/secrets/aliases/default")};
 		// TODO: search database
 		return QList<QDBusObjectPath>();
 	}
