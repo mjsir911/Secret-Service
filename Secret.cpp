@@ -12,7 +12,16 @@ SecretService::SecretService(QObject *parent): QObject(parent) {}
 
 QDBusObjectPath SecretService::ChangeLock(const QDBusObjectPath &collection) {}
 QDBusObjectPath SecretService::CreateCollection(const QString &properties, const QString &alias, QDBusObjectPath &prompt) {}
-QString SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {}
+
+SecretsDict SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {
+	debugline();
+	qDebug() << items[0].path();
+
+	SecretsDict ret;
+	Secret secret = {session, QByteArray(), "third", "text/plain"};
+	ret[items[0]] = secret;
+	return ret;
+}
 QList<QDBusObjectPath> SecretService::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {}
 void SecretService::LockService(void) {}
 
