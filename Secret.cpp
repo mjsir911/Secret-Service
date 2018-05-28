@@ -8,21 +8,41 @@
 
 #define debugline() std::cerr << "DEBUG ###: " << __PRETTY_FUNCTION__ << " : " << __LINE__ << " : " << __FILE__ << "\n"
 
-class NotImplemented : public std::logic_error
+class NotImplementedException : public std::logic_error
 {
+private:
+
+    std::string _text;
+
+    NotImplementedException(const char* message, const char* function)
+        :
+        std::logic_error((QString("Not Implemented") + QString(" : ") + QString(function)).toStdString())
+    {
+        _text = message;
+        _text += " : ";
+        _text += function;
+    };
+
 public:
-    NotImplemented() : std::logic_error("Function not yet implemented") { };
+
+    NotImplementedException(const char* message)
+        :
+        NotImplementedException("Not Implemented", message)
+    {
+    }
 };
 
+#define NotImplementedException() NotImplementedException(__PRETTY_FUNCTION__)
+
 SecretService::SecretService(QObject *parent): QObject(parent) {
-	throw NotImplemented();
+	//throw NotImplementedException();
 }
 
 QDBusObjectPath SecretService::ChangeLock(const QDBusObjectPath &collection) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 QDBusObjectPath SecretService::CreateCollection(const QString &properties, const QString &alias, QDBusObjectPath &prompt) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 
 SecretsDict SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session) {
@@ -35,10 +55,10 @@ SecretsDict SecretService::GetSecrets(const QList<QDBusObjectPath> &items, const
 	return ret;
 }
 QList<QDBusObjectPath> SecretService::Lock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &Prompt) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 void SecretService::LockService(void) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 
 QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result) {
@@ -117,7 +137,7 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 
 
 QDBusObjectPath SecretService::ReadAlias(const QString &name) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 
 QList<QDBusObjectPath> SecretService::SearchItems(StringMap &attributes, QList<QDBusObjectPath> &locked) {
@@ -131,8 +151,8 @@ QList<QDBusObjectPath> SecretService::SearchItems(StringMap &attributes, QList<Q
 }
 
 void SecretService::SetAlias(const QString &name, const QDBusObjectPath &collection) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
 QList<QDBusObjectPath> SecretService::Unlock(const QList<QDBusObjectPath> &objects, QDBusObjectPath &prompt) {
-	throw NotImplemented();
+	throw NotImplementedException();
 }
