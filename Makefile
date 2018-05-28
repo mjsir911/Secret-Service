@@ -5,17 +5,17 @@ LDFLAGS  := $(shell pkg-config Qt5DBus libsodium --libs)
 
 TARGET = server
 
-$(TARGET): SecretAdaptor.o SecretInterface.o server.o Secret.o
+$(TARGET): SecretAdaptor.moc SecretInterface.moc server.o Secret.moc Types.o
 	$(LINK.cc) $(OUTPUT_OPTION) $^
 
 run: $(TARGET)
 	./$<
 
-%.o: %.moc %.h
+%.moc: %.moc.cpp
 	$(COMPILE.cpp) -xc++ $(OUTPUT_OPTION) $<
 
 
-%.moc: %.h %.cpp
+%.moc.cpp: %.h %.cpp
 	moc -f $*.cpp $(DEFINES) $(INCPATH) $< -o $@
 
 %.cpp: %.h
