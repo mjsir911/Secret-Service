@@ -16,3 +16,6 @@ public:
 };
 
 #define NotImplementedException() NotImplementedException(__PRETTY_FUNCTION__)
+
+
+#define debugline() std::cerr << "DEBUG ###: " << __PRETTY_FUNCTION__ << " : " << __LINE__ << " : " << __FILE__ << "\n"
