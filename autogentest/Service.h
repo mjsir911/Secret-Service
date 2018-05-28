@@ -1,8 +1,13 @@
+#ifndef SERVICE_H
+#define SERVICE_H
 #include <QtDBus/QtDBus>
 #include "Types.h"
 
 class _Service : public QObject, public QDBusContext{
 	Q_OBJECT
+
+public:
+		_Service(QObject *, QDBusConnection &);
 
 public Q_SLOTS: // METHODS
     QDBusObjectPath ChangeLock(const QDBusObjectPath &collection);
@@ -20,3 +25,4 @@ Q_SIGNALS: // SIGNALS
     void CollectionCreated(const QDBusObjectPath &collection);
     void CollectionDeleted(const QDBusObjectPath &collection);
 };
+#endif
