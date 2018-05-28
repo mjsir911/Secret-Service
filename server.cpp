@@ -9,8 +9,14 @@
 
 #include <QDBusMetaType>
 
+#include <sodium.h>
+
 int main(int ac, char **av) {
+	sodium_init();
+
 	qDBusRegisterMetaType<StringMap>(); // FINALLY
+	qDBusRegisterMetaType<SecretsDict>(); // FINALLY
+	qDBusRegisterMetaType<Secret>(); // FINALLY
 
 	QCoreApplication a(ac, av);
 

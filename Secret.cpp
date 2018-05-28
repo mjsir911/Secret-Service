@@ -17,9 +17,11 @@ QList<QDBusObjectPath> SecretService::Lock(const QList<QDBusObjectPath> &objects
 void SecretService::LockService(void) {}
 
 QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVariant &input, QDBusObjectPath &result) {
-	//sendErrorReply(QDBusError::NotSupported); # BUG: sendErrorReply crashes everything beacause calledFromDBus() is false
+	debugline();
+	result.setPath("/");
 	if (algorithm == "plain") {
 		// do something
+		return QDBusVariant(QByteArray());
 	} else if (algorithm == "dh-ietf1024-sha256-aes128-cbc-pkcs7") {
 
 		QByteArray data = input.variant().value<QByteArray>();
@@ -50,9 +52,8 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 
 		return QDBusVariant(QByteArray((const char *)my_publickey, crypto_box_PUBLICKEYBYTES));
 	} else {
-		// org.freedesktop.DBus.Error.NotSupported
+		sendErrorReply(QDBusError::NotSupported, "um, no"); 
 	}
-	result.setPath("/");
 
 
 	/*
@@ -92,10 +93,10 @@ QDBusVariant SecretService::OpenSession(const QString &algorithm, const QDBusVar
 
 QDBusObjectPath SecretService::ReadAlias(const QString &name) {}
 QList<QDBusObjectPath> SecretService::SearchItems(StringMap &attributes, QList<QDBusObjectPath> &locked) {
-	std::cerr << "YOOOOOO\n";
+	debugline();
 	qDebug() << attributes << "\n";
 
-	QList<QDBusObjectPath> list = {QDBusObjectPath("/")};
+	QList<QDBusObjectPath> list = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx/iiii")};
 
 	//locked = list;
 	return list;
