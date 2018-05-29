@@ -106,15 +106,6 @@ QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant 
 
 		encryptionDict[sessionPath] = sharedkey;
 
-		qDebug();
-		for(auto e : encryptionDict.keys())
-		{
-			qDebug() << e.path() << "," << encryptionDict.value(e).toHex();
-		}
-		qDebug();
-
-		// qDebug() << peer_data.toHex(); // other's publickey
-		// qDebug() << QByteArray(reinterpret_cast<char *>(my_publickey), sizeof my_publickey).toHex();
 		return QDBusVariant(convert(my_publickey));
 	} else {
 		sendErrorReply(QDBusError::NotSupported, "um, no"); 
@@ -131,8 +122,6 @@ QList<QDBusObjectPath> _Service::SearchItems(StringMap attributes, QList<QDBusOb
 #define database_locked false
 	if (database_locked) { // If keepassxc database is locked
 		throw NotImplementedException();
-		//locked = {QDBusObjectPath("/org/freedesktop/secrets/collection/xxxx")};
-		//locked = {QDBusObjectPath("/org/freedesktop/secrets/aliases/default")};
 		return QList<QDBusObjectPath>();
 	} else {
 		locked = {QDBusObjectPath("/org/freedesktop/secrets/aliases/default")};
