@@ -73,6 +73,7 @@ QDBusVariant _Service::OpenSession(const QString &algorithm, const QDBusVariant 
 	debugline();
 	sessionPath = generatePath();
 	if (algorithm == "plain") {
+		encryptionDict[sessionPath] = QByteArray();
 		return QDBusVariant(QByteArray());
 	} else if (algorithm == "dh-ietf1024-sha256-aes128-cbc-pkcs7") {
 		QByteArray peer_data = input.variant().value<QByteArray>();
