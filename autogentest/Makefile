@@ -1,6 +1,6 @@
 .SUFFIXES:
-CXXFLAGS := $(shell pkg-config Qt5DBus libsodium --cflags) -fPIC
-LDFLAGS  := $(shell pkg-config Qt5DBus libsodium --libs)
+CXXFLAGS := $(shell pkg-config Qt5DBus libsodium glib-2.0 --cflags) -fPIC
+LDFLAGS  := $(shell pkg-config Qt5DBus libsodium glib-2.0 --libs)  $(shell /usr/bin/x86_64-pc-linux-gnu-libgcrypt-config --libs)
 
 SERVICE = org.freedesktop.Secret
 INTERFACES = Service Collection Item Session Prompt
@@ -10,7 +10,8 @@ INTERFACES = Service Collection Item Session Prompt
 
 TARGET = server
 
-$(TARGET): Service.dbus.o main.cpp Types.cpp Prompt.dbus.o Collection.dbus.o
+EGGFILES := $(wildcard egg/*.o)
+$(TARGET): Service.dbus.o main.cpp Types.cpp Prompt.dbus.o Collection.dbus.o Item.dbus.o  $(EGGFILES)
 	g++ $^ -o $@ $(CXXFLAGS) $(LDFLAGS)
 
 %Interface.cpp %Interface.h: %.h $(SERVICE)s.xml
@@ -32,4 +33,4 @@ $(TARGET): Service.dbus.o main.cpp Types.cpp Prompt.dbus.o Collection.dbus.o
 	$(LD) $(OUTPUT_OPTION) -r $^ 
 
 clean:
-	${RM} *.moc *Adaptor* *Interface* *.o
+	${RM} *.moc *Adaptor* *Interface* *.o $(TARGET)

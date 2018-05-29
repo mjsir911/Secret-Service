@@ -1,13 +1,22 @@
 #ifndef SERVICE_H
 #define SERVICE_H
+
 #include <QtDBus/QtDBus>
+
 #include "Types.h"
+
+#include "Item.h"
 
 class _Service : public QObject, public QDBusContext {
 	Q_OBJECT
 
+friend class Item;
 private:
+	QDBusObjectPath generatePath(void);
 	QDBusConnection &bus;
+
+public:
+	QMap<QDBusObjectPath, QByteArray> encryptionDict;
 
 public:
 	const QDBusObjectPath path = QDBusObjectPath("/org/freedesktop/secrets");
